@@ -1,0 +1,56 @@
+import pool from "../config/db.js";
+
+const createUserTable = async () => {
+  const userTableQueryText = `
+    CREATE TABLE IF NOT EXISTS users (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) UNIQUE NOT NULL,
+    password VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+    `;
+
+  const affCountTableQueryText = `
+    CREATE TABLE IF NOT EXISTS affirmation_count (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    affirmation_number INT NOT NULL,
+    affirmation_count INT NOT NULL,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+    `;
+
+  const affListTableQueryText = `
+    CREATE TABLE IF NOT EXISTS affirmation_list (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    affirmation VARCHAR(100),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+    `;
+
+  try {
+    pool.query(userTableQueryText);
+    console.log("User table created if not exists");
+  } catch (error) {
+    console.log("Error creating users table : ", error);
+  }
+
+  try {
+    pool.query(affCountTableQueryText);
+    console.log("affirmation_count table created if not exists");
+  } catch (error) {
+    console.log("Error creating affirmation_count table : ", error);
+  }
+
+  try {
+    pool.query(affListTableQueryText);
+    console.log("affirmation_list table created if not exists");
+  } catch (error) {
+    console.log("Error creating affirmation_list table : ", error);
+  }
+};
+
+export default createUserTable;
