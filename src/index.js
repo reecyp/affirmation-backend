@@ -25,6 +25,11 @@ app.use(
 // Routes
 app.use("/api", userRoutes);
 
+// Health check (to keep server from spinning down)
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
+
 // Error handling middleware
 app.use(errorHandling);
 
