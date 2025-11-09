@@ -16,7 +16,7 @@ const port = process.env.PORT || 3001;
 app.use(express.json());
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5173",
+    origin: [process.env.FRONTEND_URL, "http://localhost:5173"],
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH"],
     credentials: true,
   })
@@ -26,8 +26,8 @@ app.use(
 app.use("/api", userRoutes);
 
 // Health check (to keep server from spinning down)
-app.get('/health', (req, res) => {
-  res.status(200).json({ status: 'ok' });
+app.get("/health", (req, res) => {
+  res.status(200).json({ status: "ok" });
 });
 
 // Error handling middleware
