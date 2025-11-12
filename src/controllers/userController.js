@@ -100,6 +100,8 @@ export const resetUserAffCount = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+
+  console.log("reset affirmations")
 };
 
 export const updateUser = async (req, res, next) => {
