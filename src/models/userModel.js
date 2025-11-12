@@ -106,7 +106,7 @@ export const getUserAffDataService = async (id) => {
       [id]
     );
 
-    return { affCount: affCountResult.rows, affList: affListResult.rows };
+    return { affCount: affCountResult.rows, affList: affListResult };
   } catch (err) {
     console.error("Error in getUserAffDataService:", err);
     throw err;
