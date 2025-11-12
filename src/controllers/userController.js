@@ -92,17 +92,17 @@ export const deleteAff = async (req, res, next) => {
   }
 };
 
-export const resetUserAffCount = async (req, res, next) => {
-  const { id } = req.params;
-  try {
-    const resetAffs = await resetUserAffCountService(id);
-    handleResponse(res, 201, "Affirmations reset", resetAffs);
-  } catch (err) {
-    next(err);
-  }
+// export const resetUserAffCount = async (req, res, next) => {
+//   const { id } = req.params;
+//   try {
+//     const resetAffs = await resetUserAffCountService(id);
+//     handleResponse(res, 201, "Affirmations reset", resetAffs);
+//   } catch (err) {
+//     next(err);
+//   }
 
-  console.log("reset affirmations")
-};
+//   console.log("reset affirmations")
+// };
 
 export const updateUser = async (req, res, next) => {
   const { name, email } = req.body;

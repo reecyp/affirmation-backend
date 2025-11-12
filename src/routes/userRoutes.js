@@ -7,7 +7,7 @@ import {
   getAllUsers,
   getUserAffData,
   getUserById,
-  resetUserAffCount,
+  // resetUserAffCount,
   updateUser,
   updateUserAff,
 } from "../controllers/userController.js";
@@ -24,6 +24,6 @@ router.patch("/user/:id/affirmation/count/:affNum", updateUserAff);
 router.get("/user/:id/affirmations", getUserAffData);
 router.post("/user/:id/affirmation/list/:affirmation", createAff);
 router.delete("/affirmation/:id", deleteAff);
-router.patch("/user/:id/affirmation/reset", resetUserAffCount)
+// router.patch("/user/:id/affirmation/reset", resetUserAffCount)
 
 export default router;
