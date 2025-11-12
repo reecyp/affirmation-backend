@@ -56,18 +56,26 @@ export const getUserAffDataService = async (id) => {
 
     if (checkDate.rows.length > 0) {
       const lastUpdate = new Date(checkDate.rows[0].last_updated);
-      const today = new Date();
 
-      // Compare just the date parts, ignoring time
+      // Convert both to CST dates
+      const now = new Date();
+      const lastUpdateCST = new Date(
+        lastUpdate.toLocaleString("en-US", { timeZone: "America/Chicago" })
+      );
+      const todayCST = new Date(
+        now.toLocaleString("en-US", { timeZone: "America/Chicago" })
+      );
+
+      // Compare only the date components (ignore time)
       const lastUpdateDate = new Date(
-        lastUpdate.getFullYear(),
-        lastUpdate.getMonth(),
-        lastUpdate.getDate()
+        lastUpdateCST.getFullYear(),
+        lastUpdateCST.getMonth(),
+        lastUpdateCST.getDate()
       );
       const todayDate = new Date(
-        today.getFullYear(),
-        today.getMonth(),
-        today.getDate()
+        todayCST.getFullYear(),
+        todayCST.getMonth(),
+        todayCST.getDate()
       );
 
       console.log("Last update:", lastUpdateDate.toLocaleDateString("en-US"));
@@ -77,7 +85,7 @@ export const getUserAffDataService = async (id) => {
         lastUpdateDate.getTime() !== todayDate.getTime()
       );
 
-      //if last update was on a different day, reset
+      // Reset if on a different day
       if (lastUpdateDate.getTime() !== todayDate.getTime()) {
         await pool.query(
           `UPDATE affirmation_count
@@ -87,27 +95,8 @@ export const getUserAffDataService = async (id) => {
         );
       }
     }
-
-    const affCountResult = await pool.query(
-      `
-        SELECT * FROM affirmation_count
-        WHERE user_id = $1;
-      `,
-      [id]
-    );
-
-    const affListResult = await pool.query(
-      `
-        SELECT * FROM affirmation_list
-        WHERE user_id = $1;
-      `,
-      [id]
-    );
-
-    return { affCount: affCountResult.rows, affList: affListResult };
-  } catch (error) {
-    console.error("Error increasing affirmation:", error);
-    throw error;
+  } catch (err) {
+    console.error("Error in getUserAffDataService:", err);
   }
 };
 
