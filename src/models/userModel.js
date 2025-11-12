@@ -56,15 +56,7 @@ export const getUserAffDataService = async (id) => {
 
     if (checkDate.rows.length > 0) {
       const lastUpdate = new Date(checkDate.rows[0].last_updated);
-
-      // Convert both to CST dates
-      const now = new Date();
-      const lastUpdateCST = new Date(
-        lastUpdate.toLocaleString("en-US", { timeZone: "America/Chicago" })
-      );
-      const todayCST = new Date(
-        now.toLocaleString("en-US", { timeZone: "America/Chicago" })
-      );
+      const today = new Date();
 
       // Compare just the date parts, ignoring time
       const lastUpdateDate = new Date(
@@ -95,8 +87,27 @@ export const getUserAffDataService = async (id) => {
         );
       }
     }
-  } catch (err) {
-    console.error("Error in getUserAffDataService:", err);
+
+    const affCountResult = await pool.query(
+      `
+        SELECT * FROM affirmation_count
+        WHERE user_id = $1;
+      `,
+      [id]
+    );
+
+    const affListResult = await pool.query(
+      `
+        SELECT * FROM affirmation_list
+        WHERE user_id = $1;
+      `,
+      [id]
+    );
+
+    return { affCount: affCountResult.rows, affList: affListResult };
+  } catch (error) {
+    console.error("Error increasing affirmation:", error);
+    throw error;
   }
 };
 
