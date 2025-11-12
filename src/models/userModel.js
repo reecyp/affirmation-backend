@@ -62,6 +62,11 @@ export const getUserAffDataService = async (id) => {
       const lastDateLocal = lastUpdate.toLocaleDateString("en-US");
       const todayLocal = today.toLocaleDateString("en-US");
 
+      //checking to see what is wrong
+      console.log("Last update:", lastDateLocal);
+      console.log("Today:", todayLocal);
+      console.log("Are they different?", lastDateLocal !== todayLocal);
+
       //if last update was on a different day, reset
       if (lastDateLocal !== todayLocal) {
         await pool.query(
