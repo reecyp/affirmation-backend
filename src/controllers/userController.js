@@ -1,5 +1,6 @@
 import {
   addUserAffirmationCount,
+  createUserActionsService,
   createUserAffirmation,
   createUserService,
   deleteUserAffirmation,
@@ -26,6 +27,7 @@ export const createUser = async (req, res, next) => {
   try {
     const newUser = await createUserService(name, email, password);
     await addUserAffirmationCount(newUser.id)
+    await createUserActionsService(newUser.id)
     handleResponse(res, 201, "User created successfully", newUser);
   } catch (err) {
     next(err);

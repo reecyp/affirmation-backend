@@ -31,6 +31,17 @@ const createUserTable = async () => {
 );
     `;
 
+  const affActiontableQueryText = `
+    CREATE TABLE IF NOT EXISTS affirmation_actions (
+    id SERIAL PRIMARY KEY,
+    user_id VARCHAR(100) NOT NULL,
+    action_1 VARCHAR(100),
+    action_2 VARCHAR(100),
+    action_3 VARCHAR(100),
+    created_at TIMESTAMP DEFAULT NOW()
+);
+    `;
+
   try {
     pool.query(userTableQueryText);
     console.log("User table created if not exists");
@@ -50,6 +61,13 @@ const createUserTable = async () => {
     console.log("affirmation_list table created if not exists");
   } catch (error) {
     console.log("Error creating affirmation_list table : ", error);
+  }
+
+  try {
+    pool.query(affActiontableQueryText);
+    console.log("affirmation_actions table created if not exists");
+  } catch (error) {
+    console.log("Error creating affirmation_actions table : ", error);
   }
 };
 

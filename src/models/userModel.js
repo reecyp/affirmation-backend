@@ -18,6 +18,14 @@ export const createUserService = async (name, email, password) => {
   return result.rows[0];
 };
 
+export const createUserActionsService = async (id) => {
+  const result = await pool.query(
+    "INSERT INTO affirmation_actions (user_id) VALUES ($1) RETURNING *",
+    [id]
+  );
+  return result.rows[0];
+};
+
 export const addUserAffirmationCount = async (id) => {
   for (let i = 0; i < 3; i++) {
     let count = i + 1;
