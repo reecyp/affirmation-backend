@@ -19,11 +19,14 @@ export const createUserService = async (name, email, password) => {
 };
 
 export const createUserActionsService = async (id) => {
-  const result = await pool.query(
-    "INSERT INTO affirmation_actions (user_id) VALUES ($1) RETURNING *",
-    [id]
-  );
-  return result.rows[0];
+  for (let i = 0; i < 3; i++) {
+    let count = i + 1;
+    const result = await pool.query(
+      "INSERT INTO affirmation_actions (user_id, affirmation_number) VALUES ($1, $2) RETURNING *",
+      [id, count]
+    );
+    return result.rows[0];
+  }
 };
 
 export const addUserAffirmationCount = async (id) => {
@@ -46,6 +49,23 @@ export const increaseAffirmation = async (id, affNum) => {
       RETURNING *;
       `,
       [id, affNum]
+    );
+    return result.rows[0];
+  } catch (error) {
+    console.error("Error increasing affirmation:", error);
+    throw error;
+  }
+};
+
+export const changeAction = async (id, action, actionNum) => {
+  try {
+    const result = await pool.query(
+      `UPDATE affirmation_actions 
+      SET action_${actionNum} = $2 
+      WHERE user_id = $1 
+      RETURNING *;
+      `,
+      [id, action]
     );
     return result.rows[0];
   } catch (error) {
@@ -120,7 +140,6 @@ export const getUserAffDataService = async (id) => {
     throw err;
   }
 };
-
 
 export const createUserAffirmation = async (id, affirmation) => {
   try {
