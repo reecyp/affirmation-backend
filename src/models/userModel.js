@@ -58,17 +58,27 @@ export const getUserAffDataService = async (id) => {
       const lastUpdate = new Date(checkDate.rows[0].last_updated);
       const today = new Date();
 
-      // Convert both to local date strings
-      const lastDateLocal = lastUpdate.toLocaleDateString("en-US");
-      const todayLocal = today.toLocaleDateString("en-US");
+      // Compare just the date parts, ignoring time
+      const lastUpdateDate = new Date(
+        lastUpdate.getFullYear(),
+        lastUpdate.getMonth(),
+        lastUpdate.getDate()
+      );
+      const todayDate = new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
+      );
 
-      //checking to see what is wrong
-      console.log("Last update:", lastDateLocal);
-      console.log("Today:", todayLocal);
-      console.log("Are they different?", lastDateLocal !== todayLocal);
+      console.log("Last update:", lastUpdateDate.toLocaleDateString("en-US"));
+      console.log("Today:", todayDate.toLocaleDateString("en-US"));
+      console.log(
+        "Are they different?",
+        lastUpdateDate.getTime() !== todayDate.getTime()
+      );
 
       //if last update was on a different day, reset
-      if (lastDateLocal !== todayLocal) {
+      if (lastUpdateDate.getTime() !== todayDate.getTime()) {
         await pool.query(
           `UPDATE affirmation_count
           SET affirmation_count = 0, last_updated = CURRENT_TIMESTAMP
