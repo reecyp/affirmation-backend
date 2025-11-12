@@ -66,16 +66,16 @@ export const getUserAffDataService = async (id) => {
         now.toLocaleString("en-US", { timeZone: "America/Chicago" })
       );
 
-      // Compare only the date components (ignore time)
+      // Compare just the date parts, ignoring time
       const lastUpdateDate = new Date(
-        lastUpdateCST.getFullYear(),
-        lastUpdateCST.getMonth(),
-        lastUpdateCST.getDate()
+        lastUpdate.getFullYear(),
+        lastUpdate.getMonth(),
+        lastUpdate.getDate()
       );
       const todayDate = new Date(
-        todayCST.getFullYear(),
-        todayCST.getMonth(),
-        todayCST.getDate()
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate()
       );
 
       console.log("Last update:", lastUpdateDate.toLocaleDateString("en-US"));
@@ -85,7 +85,7 @@ export const getUserAffDataService = async (id) => {
         lastUpdateDate.getTime() !== todayDate.getTime()
       );
 
-      // Reset if on a different day
+      //if last update was on a different day, reset
       if (lastUpdateDate.getTime() !== todayDate.getTime()) {
         await pool.query(
           `UPDATE affirmation_count
