@@ -191,6 +191,19 @@ export const deleteUserAffirmation = async (id) => {
   }
 };
 
+export const getUserActionsService = async (id) => {
+  try {
+    const result = await pool.query(
+      `SELECT * FROM affirmation_actions WHERE user_id = $1 ORDER BY affirmation_number;`,
+      [id]
+    );
+    return result.rows;
+  } catch (error) {
+    console.error("Error fetching user actions:", error);
+    throw error;
+  }
+};
+
 export const updateUserService = async (id, name, email) => {
   const result = await pool.query(
     "UPDATE users SET name=$1, email=$2 WHERE id=$3 RETURNING *",

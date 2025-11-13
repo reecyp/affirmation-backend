@@ -5,6 +5,7 @@ import {
   deleteAff,
   deleteUser,
   getAllUsers,
+  getUserActions,
   getUserAffData,
   getUserById,
   resetUserAffCount,
@@ -23,6 +24,7 @@ router.put("/user/:id", validateUser, updateUser);
 router.delete("/user/:id", deleteUser);
 router.patch("/user/:id/affirmation/count/:affNum", updateUserAff);
 router.get("/user/:id/affirmations", getUserAffData);
+router.get("/user/:id/actions", getUserActions);
 router.post("/user/:id/affirmation/list/:affirmation", createAff);
 router.delete("/affirmation/:id", deleteAff);
 router.patch("/user/:id/affirmation/reset", resetUserAffCount)

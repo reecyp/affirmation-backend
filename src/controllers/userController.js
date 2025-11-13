@@ -7,6 +7,7 @@ import {
   deleteUserAffirmation,
   deleteUserService,
   getAllUsersService,
+  getUserActionsService,
   getUserAffDataService,
   getUsersByIdService,
   increaseAffirmation,
@@ -64,6 +65,15 @@ export const getUserAffData = async (req, res, next) => {
     next(err);
   }
 }
+
+export const getUserActions = async (req, res, next) => {
+  try {
+    const actions = await getUserActionsService(req.params.id);
+    handleResponse(res, 200, "Actions fetched successfully", actions);
+  } catch (err) {
+    next(err);
+  }
+};
 
 export const updateUserAction = async (req, res, next) => {
   try {
