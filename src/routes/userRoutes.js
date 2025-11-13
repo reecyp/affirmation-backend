@@ -9,6 +9,7 @@ import {
   getUserById,
   resetUserAffCount,
   updateUser,
+  updateUserAction,
   updateUserAff,
 } from "../controllers/userController.js";
 import validateUser from "../middlewares/inputValidator.js";
@@ -25,5 +26,6 @@ router.get("/user/:id/affirmations", getUserAffData);
 router.post("/user/:id/affirmation/list/:affirmation", createAff);
 router.delete("/affirmation/:id", deleteAff);
 router.patch("/user/:id/affirmation/reset", resetUserAffCount)
+router.patch("/user/:id/affirmation/:affNum/action", updateUserAction)
 
 export default router;

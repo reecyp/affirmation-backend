@@ -1,5 +1,6 @@
 import {
   addUserAffirmationCount,
+  changeAction,
   createUserActionsService,
   createUserAffirmation,
   createUserService,
@@ -63,6 +64,20 @@ export const getUserAffData = async (req, res, next) => {
     next(err);
   }
 }
+
+export const updateUserAction = async (req, res, next) => {
+  try {
+    const { id, affNum } = req.params;
+    const { action } = req.body;
+    
+    const updatedAction = await changeAction(id, action, affNum);
+    if (!updatedAction) return handleResponse(res, 404, "Action not found");
+    handleResponse(res, 200, "Action updated successfully", updatedAction);
+  } catch (err) {
+    next(err);
+  }
+};
+
 
 export const updateUserAff = async (req, res, next) => {
   try {

@@ -61,15 +61,16 @@ export const changeAction = async (id, action, actionNum) => {
   try {
     const result = await pool.query(
       `UPDATE affirmation_actions 
-      SET action_${actionNum} = $2 
-      WHERE user_id = $1 
+      SET action_text = $1
+      WHERE user_id = $2 
+      AND affirmation_number = $3
       RETURNING *;
       `,
-      [id, action]
+      [action, id, actionNum]
     );
     return result.rows[0];
   } catch (error) {
-    console.error("Error increasing affirmation:", error);
+    console.error("Error changing action:", error);
     throw error;
   }
 };

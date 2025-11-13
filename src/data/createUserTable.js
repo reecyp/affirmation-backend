@@ -32,13 +32,14 @@ const createUserTable = async () => {
     `;
 
   const affActiontableQueryText = `
-    CREATE TABLE affirmation_actions (
+    CREATE TABLE IF NOT EXISTS affirmation_actions (
     id SERIAL PRIMARY KEY,
     user_id INT NOT NULL,
     affirmation_number INT NOT NULL,
     action_text VARCHAR(255),
-    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    created_at TIMESTAMP DEFAULT NOW()
+    action_date DATE DEFAULT CURRENT_DATE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    UNIQUE(user_id, affirmation_number, action_date)
 );
     `;
 
