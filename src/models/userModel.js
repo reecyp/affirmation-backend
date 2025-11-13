@@ -25,7 +25,7 @@ export const createUserActionsService = async (id) => {
       "INSERT INTO affirmation_actions (user_id, affirmation_number) VALUES ($1, $2) RETURNING *",
       [id, count]
     );
-    return result.rows[0];
+    console.log(`Action row ${count} created for user ${id}`);
   }
 };
 
