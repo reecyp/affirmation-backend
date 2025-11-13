@@ -122,6 +122,15 @@ export const getUserAffDataService = async (id) => {
           WHERE user_id = $1;`,
           [id]
         );
+
+        await pool.query(
+          `UPDATE affirmation_actions
+          SET action_text = NULL, action_date = CURRENT_DATE
+          WHERE user_id = $1;`,
+          [id]
+        );
+        
+        console.log("Actions reset for new day");
       }
     }
 
