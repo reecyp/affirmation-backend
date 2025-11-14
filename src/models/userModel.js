@@ -166,20 +166,33 @@ export const createUserAffirmation = async (id, affirmation) => {
   }
 };
 
-export const resetUserAffCountService = async (id) => {
+export const resetUserAffCountAndActionService = async (id) => {
   try {
-    const result = await pool.query(
-      `
-        UPDATE affirmation_count 
-        SET affirmation_count = 0
-        WHERE user_id = $1
-        RETURNING *;
-      `,
+    // Reset affirmation counts
+    const countResult = await pool.query(
+      `UPDATE affirmation_count 
+       SET affirmation_count = 0, last_updated = CURRENT_TIMESTAMP
+       WHERE user_id = $1
+       RETURNING *;`,
       [id]
     );
-    return result.rows;
+
+    // Reset action texts
+    const actionResult = await pool.query(
+      `UPDATE affirmation_actions 
+       SET action_text = NULL, created_at = CURRENT_TIMESTAMP
+       WHERE user_id = $1
+       RETURNING *;`,
+      [id]
+    );
+
+    console.log(`Reset complete for user ${id}`);
+    return {
+      affirmations: countResult.rows,
+      actions: actionResult.rows
+    };
   } catch (error) {
-    console.error("Error resetting affirmation count:", error);
+    console.error("Error resetting affirmation count and actions:", error);
     throw error;
   }
 };

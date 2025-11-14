@@ -11,7 +11,7 @@ import {
   getUserAffDataService,
   getUsersByIdService,
   increaseAffirmation,
-  resetUserAffCountService,
+  resetUserAffCountAndActionService,
   updateUserService,
 } from "../models/userModel.js";
 
@@ -119,10 +119,10 @@ export const deleteAff = async (req, res, next) => {
   }
 };
 
-export const resetUserAffCount = async (req, res, next) => {
+export const resetUserAffCountAndActions = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const resetAffs = await resetUserAffCountService(id);
+    const resetAffs = await resetUserAffCountAndActionService(id);
     handleResponse(res, 201, "Affirmations reset", resetAffs);
   } catch (err) {
     next(err);
